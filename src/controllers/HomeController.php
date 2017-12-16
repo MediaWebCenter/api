@@ -11,6 +11,7 @@ final class HomeController extends BaseController{
     {
         return $response->withJson(array('status'=>'API funcionando...'), 200);
     }
+   
 
   
     

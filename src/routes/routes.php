@@ -1,36 +1,41 @@
 <?php
 
-use \src\controllers\HomeController;
-use \src\controllers\MarcasController;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+use src\controllers\HomeController;
+use src\controllers\MarcasController;
+use src\controllers\AuthController;
+use src\middlewares\scope\ScopeSelect;
+use src\middlewares\scope\ScopeAdd;
+use src\middlewares\scope\ScopeUpdate;
+use src\middlewares\scope\ScopeDelete;
+use src\middlewares\scope\ScopeFull;
 
 
+// Redireccionamiento--------------------------------------------
 $app->group('/', function()  use ($container){
     $this->get('', function (Request $request, Response $response) {
-        //Hacemos redireccionamiento a /v1
-        // Revisar controlador admin/users:index
-        //Ejemplo de redireccionamiento accediendo al container y con rutas con nombre
-        //return $response->withRedirect( $this->container->router->pathFor('raizv1'));
-      
         $uri = $request->getUri() . 'v1'; 
         return $response->withRedirect( (string)$uri,301); 
       
-    });
+        });
 });
-    
-//API---------------------------------------------------------------
 
-
+//API---------------------------------------------------------
 $app->group('/v1', function () use ($container) {
-    $this->get('', HomeController::class . ':index');
-
-    $this->group('/productos', function () {
-        $this->get('', MarcasController::class . ':index');
-        $this->get('/{id}', MarcasController::class . ':show');
-        $this->post('', MarcasController::class . ':create');
-        $this->put('/{id}', MarcasController::class . ':update');
-        $this->delete('/{id}', MarcasController::class . ':delete');
-    });
+  //Status la API---------------------------------------------
+    $this->get('', HomeController::class . ':index')->add(new ScopeSelect($container));
+//Productos--------------------------------------------------
+    $this->group('/productos', function () use ($container) {
+        $this->get('', MarcasController::class . ':index')->add(new ScopeSelect($container));
+        $this->get('/{id}', MarcasController::class . ':show')->add(new ScopeSelect($container));
+        $this->post('', MarcasController::class . ':create')->add(new ScopeAdd($container));
+        $this->put('/{id}', MarcasController::class . ':update')->add(new ScopeUpdate($container));
+        $this->delete('/{id}', MarcasController::class . ':delete')->add(new ScopeDelete($container));
+               });
+//Autentificacion-----------------------------------------------
+     $this->group('/token', function () {
+        $this->post('',AuthController::class . ':show');
+       });
 });
+
+
 

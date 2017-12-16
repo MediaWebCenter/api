@@ -1,7 +1,5 @@
 <?php
 namespace src\controllers;
-
-
 use src\controllers\BaseController;
 
 final class MarcasController extends BaseController

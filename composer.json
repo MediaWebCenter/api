@@ -11,7 +11,9 @@
         "tuupola/base62": "^0.9.0",
         "slim/http-cache": "^0.4.0",
         "slim/twig-view": "^2.3",
-        "slim/flash": "^0.4.0"
+        "slim/flash": "^0.4.0",
+        "dyorg/slim-token-authentication": "^0.3.3",
+        "tuupola/cors-middleware": "^0.5.2"
     },
     "autoload": {
         "psr-4": { 
