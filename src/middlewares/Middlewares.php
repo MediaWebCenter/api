@@ -55,7 +55,7 @@ $app->add("HttpBasicAuthentication");
 $container["JwtAuthentication"] = function ($container) {
     return new JwtAuthentication([
         "path" => "/v1",
-        "passthrough" => ["/v1/token"],
+        "passthrough" => ["/v1/token","/v1/status"],
         "secret" => getenv("JWT_SECRET"),
         "attribute" => false,
         "cookie" => "facebook",

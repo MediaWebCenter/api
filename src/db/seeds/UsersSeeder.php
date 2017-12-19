@@ -21,14 +21,15 @@ class UsersSeeder extends AbstractSeed
  
   $data = ['username'    => 'kike@izarmedia.es',
           'hashed' =>  password_hash("kike", PASSWORD_BCRYPT),
+          'isactive' => 1
           ];
   $users->insert($data)->save();
   $lastID= $this->fetchRow("select LAST_INSERT_ID()")[0];
   $data =[
          'accounts_id' => $lastID,
          'scope' => serialize([
-                   'todo' => 5,
-                   'categ'=> 5
+                   'productos' => 5,
+                   'admin'=> 5
          ])
   ];
   $usersinfo->insert($data)->save();
@@ -36,6 +37,7 @@ class UsersSeeder extends AbstractSeed
  
   $data = ['username'    => 'sergio@izarmedia.es',
           'hashed' => password_hash("sergio", PASSWORD_BCRYPT),
+          'isactive' => 1
           ];
   
   $users->insert($data)->save();
@@ -43,8 +45,8 @@ class UsersSeeder extends AbstractSeed
   $data =[
          'accounts_id' => $lastID,
          'scope' => serialize([
-                   'todo' => 3,
-                   'categ'=> 1
+                   'productos' => 3,
+                   'admin'=> 1
          ])
   ];
   $usersinfo->insert($data)->save();     

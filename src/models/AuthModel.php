@@ -1,6 +1,6 @@
 <?php
 namespace src\models;
-use src\lib\Auth;
+
 
 
 class AuthModel extends BaseModel
@@ -12,74 +12,50 @@ class AuthModel extends BaseModel
     function Autenticar(string $usuario)
     {
       try {
-            $this->conexion->getPdo()->beginTransaction();
+            //Select sobre usuarios para traer los valores
             $columnas=array($this->table.'.id',$this->table.'.username',$this->table.'.created' );
-
+            //peticion de la tabla accounts los datos id, username y created
             $auth = $this->conexion->from($this->table)
                                     ->select(NULL)
                                     ->select($columnas)
                                     ->where('username',$usuario)
                                     ->fetch();  
-                                   
-            $campos=array($this->data.'.iat',$this->data.'.exp', $this->data.'.jti', $this->data.'.scope'); 
+                   //retornamos los campos consultados                   
+                                     return $auth;
+            
+                  } catch (Exception $e) {
+                        echo "Fallo: " . $e->getMessage();
+                    }
+                 }
 
+    public function encriptarPayload(int $id){
+      try {
+            $campos=array($this->data.'.iat',$this->data.'.exp', $this->data.'.jti', $this->data.'.scope', $this->data.'.id'); 
+            //peticion de la tabla account_info de los datos iat, exp y scope
             $valores = $this->conexion->from($this->data)
                                       ->select(NULL)
                                       ->select( $campos)
-                                      ->where('id', $auth->id)
+                                      ->where('id', $id)
                                       ->fetch(); 
+            //retornamos los campos consultados
+                                      return $valores;
+             } catch (Exception $e) {
+             echo "Fallo: " . $e->getMessage();
+        }
+      }
 
-            $deserializar= unserialize($valores->scope);
-                                         
-             if(is_object($auth)){
-                         $token= Auth::SignIn([
-                               'id'=>$auth->id,
-                               'username'=>$auth->username,
-                               'scope'=>$deserializar
-                            ]); 
-            
+   public function setValues($set,$id){
+         //update, metemos los valores del token en la BBDD
+      try {
+            return $this->conexion->update($this->data)
+            ->set($set)
+            ->where('id', $id)
+            ->execute();  
 
-            $decoded= Auth::GetData($token);
-
-            $set=array(
-                  'iat' => $decoded->iat,
-                  'exp' => $decoded->exp,
-                  'jti' => $decoded->jti
-                  );
-
-            if( empty($valores->iat)  or empty($valores->exp) or empty($valores->jti) ){
-                  $this->conexion->update($this->data)
-                                  ->set($set)
-                                  ->where('id', $auth->id)
-                                  ->execute();  
-
-                                  $data=$token;
-                     }else{
-                        $tokenRes= Auth::Restore([
-                              'iat'=>$valores->iat,
-                              'exp'=>$valores->exp,
-                              'jti'=>$valores->jti,
-                              'id'=>$auth->id,
-                              'username'=>$auth->username,
-                              'scope'=>$deserializar
-                             ]); 
-
-                                  $data=$tokenRes;
-            
-                              }       
-                        
-                         $this->conexion->getPdo()->commit();
-                         return $data;
-                   }
-
-
-                  } catch (Exception $e) {
-                        $this->conexion->getPdo()->rollBack();
-                        echo "Fallo: " . $e->getMessage();
-                    }
-                
-
-    }
+      } catch (Exception $e) {
+            echo "Fallo: " . $e->getMessage();
+        }
+   }
 
     public function hasScope(int $id){
 

@@ -7,43 +7,50 @@ class Auth
 {
     private static $encrypt = ['HS256'];
     private static $aud = null;
-  
-    public static function SignIn($data)
+  // meter los payload en el token
+    public static function SignIn($data, $username)
     {
-        
+        //deserializamos el scope
+        $deserializar= unserialize($data->scope);
+       //ponemos el tiempo
         $time = time();
+        //encriptamos el jti en Base62 con tuupola
         $jti = (new Base62)->encode(random_bytes(16));
+        //generamos el array con los payloads
         $token = array(
             "iat" => $time,
             'exp' => $time + (60*3600),
             "jti" => $jti,
-            "id" => $data['id'],
-            "username" => $data['username'],
-            "scope" => $data['scope'],
+            "id" => $data->id,
+            "username" => $username,
+            "scope" => $deserializar,
             'aud' => self::Aud(),
-            
-        );
-
-        return JWT::encode($token,getenv("JWT_SECRET"));
+            );
+            //Codificamos el token en JWT
+        $token=JWT::encode($token,getenv("JWT_SECRET"));
+        //retornamos el token
+        return $token;
     }
-
-    public static function Restore($data)
+  //encriptar el token
+    public static function Restore($data,$username)
     {
-        
+                     
+        $deserializar= unserialize($data->scope);
          $token = array(
-            "iat" => $data['iat'],
-            'exp' => $data['exp'],
-            "jti" => $data['jti'],
-            "id" => $data['id'],
-            "username" => $data['username'],
-            "scope" => $data['scope'],
+            "iat" => $data->iat,
+            'exp' => $data->exp,
+            "jti" => $data->jti,
+            "id" => $data->id,
+            "username" => $username,
+            "scope" => $deserializar,
             'aud' => self::Aud(),
             
         );
-
-        return JWT::encode($token,getenv("JWT_SECRET"));
+       $token=JWT::encode($token,getenv("JWT_SECRET"));
+       return $token;
+       
     }
-
+  //meter el aud del token
     public  static function Aud()
     {
         $aud = '';
@@ -61,7 +68,7 @@ class Auth
         
         return sha1($aud);
     }
-
+//desencriptar el token
     public static function GetData($token)
     {
         return JWT::decode(

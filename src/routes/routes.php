@@ -8,6 +8,8 @@ use src\middlewares\scope\ScopeAdd;
 use src\middlewares\scope\ScopeUpdate;
 use src\middlewares\scope\ScopeDelete;
 use src\middlewares\scope\ScopeFull;
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
 
 
 // Redireccionamiento--------------------------------------------
@@ -22,7 +24,7 @@ $app->group('/', function()  use ($container){
 //API---------------------------------------------------------
 $app->group('/v1', function () use ($container) {
   //Status la API---------------------------------------------
-    $this->get('', HomeController::class . ':index')->add(new ScopeSelect($container));
+    $this->get('/status', HomeController::class . ':index');
 //Productos--------------------------------------------------
     $this->group('/productos', function () use ($container) {
         $this->get('', MarcasController::class . ':index')->add(new ScopeSelect($container));
@@ -33,7 +35,9 @@ $app->group('/v1', function () use ($container) {
                });
 //Autentificacion-----------------------------------------------
      $this->group('/token', function () {
-        $this->post('',AuthController::class . ':show');
+         //generamos el token con el controlador llamando a la funcion generateToken
+       
+        $this->post('',AuthController::class . ':generateToken');
        });
 });
 

@@ -15,7 +15,7 @@ class ScopeDelete extends ScopeSelect
         $decoded= Auth::GetData($break[1]);
         $auth= $this->container->get('AuthModel');
         $data=$auth->hasScope((int)$decoded->id);
-        if($data["todo"]>=self::PERM_DELETE){
+        if($data["productos"]>=self::PERM_DELETE){
             return $next($request, $response);
          }else{
             return $response->withJson(array('error'=>'No tiene permiso para acceder'), 404);

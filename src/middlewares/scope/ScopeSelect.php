@@ -30,7 +30,7 @@ class ScopeSelect
         $decoded= Auth::GetData($break[1]);
         $auth= $this->container->get('AuthModel');
         $data=$auth->hasScope((int)$decoded->id);
-        if($data["todo"]>=self::PERM_SELECT){
+        if($data["productos"]>=self::PERM_SELECT){
             return $next($request, $response);
            }else{
             return $response->withJson(array('error'=>'No tiene permiso para acceder'), 404);

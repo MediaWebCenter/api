@@ -15,27 +15,23 @@ class Marcas extends AbstractSeed
      */
     public function run()
     {
-        $data = [
 
-            [
-                'marca'    => 'Nestle',
-                'producto'    => 'chocolate',
-                'alternativa'    => 'valor, suchard'
-            ],
-            [
-                'marca'    => 'Nestle',
-                'producto'    => 'chocolate',
-                'alternativa'    => 'valor, suchard'
-            ],
-            [
-                'marca'    => 'Nestle',
-                'producto'    => 'chocolate',
-                'alternativa'    => 'valor, suchard'
-               ]
-           
-         ];
-    
-        $posts = $this->table('marcas');
-        $posts->insert($data)->save();
+        $faker = Faker\Factory::create();
+        $data = [];
+        for ($i = 1; $i < 100; $i++) {
+            $data[] = [
+                'idHash'     => md5($i),
+                'marca'      => $faker->userName,
+                'producto'   => $faker->firstName,
+                'alternativa'=> $faker->lastName,
+                
+            ];
+        }
+
+        $this->insert('marcas', $data);
     }
-}
+       
+    
+       
+    }
+
