@@ -3,7 +3,6 @@ namespace src\middlewares;
 use src\models;
 use src\models\AuthModel;
 use src\lib\Auth;
-use src\lib\Scopes;
 use Psr\Container\ContainerInterface;
 
 
