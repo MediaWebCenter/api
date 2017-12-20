@@ -57,7 +57,7 @@ class AuthModel extends BaseModel
         }
    }
 
-    public function hasScope(int $id){
+    public function getScope(int $id){
 
       $campos=array($this->data.'.scope');
 

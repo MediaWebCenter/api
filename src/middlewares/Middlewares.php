@@ -6,6 +6,7 @@ use \Slim\Middleware\HttpBasicAuthentication\PdoAuthenticator,
     \Tuupola\Middleware\Cors;
 
 
+//middleware que protege toda la app, global usado en container
 
 $container = $app->getContainer();
 
@@ -26,10 +27,7 @@ $container["Cors"] = function ($container) {
 $app->add("Cors");
 
 // Gestion autenticacion para obtener el token
-
-
-
-$container["HttpBasicAuthentication"] = function ($container) {
+$container["HttpBasicAuthentication"] = function ($container)  {
     $pdo=$container['pdo']; 
     return new HttpBasicAuthentication([
         "path" => ["/v1/token"],
@@ -51,7 +49,6 @@ $container["HttpBasicAuthentication"] = function ($container) {
 $app->add("HttpBasicAuthentication");
 
 //  autenticacion JWT
-
 $container["JwtAuthentication"] = function ($container) {
     return new JwtAuthentication([
         "path" => "/v1",

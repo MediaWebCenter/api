@@ -21,7 +21,7 @@ $app->group('/', function()  use ($container){
 /*********************** API *****************************************/
 $app->group('/v1', function () use ($container) {
 
-  /*********************** Status la API  *****************************************/
+/*********************** Status la API  *****************************************/
        //ruta para comprobar el estado de la API con token
     $this->get('', HomeController::class . ':index');
       //ruta para comprobar el estado de la API sin token para no registrados
@@ -45,7 +45,7 @@ $app->group('/v1', function () use ($container) {
          //generamos el token con el controlador llamando a la funcion generateToken
         $this->post('', AuthController::class . ':generateToken');
        });
-});
+})->add(new Scope($container));
 
 
 
