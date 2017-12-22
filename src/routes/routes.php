@@ -4,8 +4,9 @@ use src\controllers\HomeController;
 use src\controllers\MarcasController;
 use src\controllers\AuthController;
 use src\middlewares\Scope;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+use src\middlewares\apiLimiter;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 
 /*********************** Redireccionamiento *****************************************/
@@ -45,7 +46,7 @@ $app->group('/v1', function () use ($container) {
          //generamos el token con el controlador llamando a la funcion generateToken
         $this->post('', AuthController::class . ':generateToken');
        });
-})->add(new Scope($container));
+})->add(new Scope($container))->add(new apiLimiter($container));
 
 
 

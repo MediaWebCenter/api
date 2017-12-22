@@ -22,7 +22,7 @@ final class AuthController extends BaseController
                 $id=($data->id);
                 //consultamos los payload que necesitamos
                 $token=$auth->encriptarPayload($data->id);
-                //comprobamos que el token no esta generado en el usuario anteriormente y grabamos en BBDD
+                 //comprobamos que el token no esta generado en el usuario anteriormente y grabamos en BBDD
                  if( empty($token->iat)  or empty($token->exp) or empty($token->jti) ){
                      //Sacamos la logica a una libreria para dejar el controlador lo mas limpio posible
                     //generamos el token con el username y los payload recogidos jti, exp, iat, scopes en lib/Auth

@@ -58,10 +58,9 @@ class AuthModel extends BaseModel
    }
 
     public function getScope(int $id){
-
-      $campos=array($this->data.'.scope');
-
-      $valores = $this->conexion->from($this->data)
+      try {
+            $campos=array($this->data.'.scope');
+            $valores = $this->conexion->from($this->data)
                                 ->select(NULL)
                                 ->select( $campos)
                                 ->where('id', $id)
@@ -69,6 +68,11 @@ class AuthModel extends BaseModel
 
               $deserializar= unserialize($valores->scope);
               return  $deserializar;
+
+      } catch (Exception $e) {
+            echo "Fallo: " . $e->getMessage();
+        }
+      
 
     }
      
