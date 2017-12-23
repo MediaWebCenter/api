@@ -1,6 +1,7 @@
 <?php
 use \src\models\MarcasModel;
 use \src\models\AuthModel;
+use \src\models\ApiLimiterModel;
 use \src\middlewares;
 use \src\middlewares\AuthMiddleware;
 use \src\middlewares\TestMW;
@@ -32,7 +33,7 @@ $container['MarcasModel'] = function ($container) use($options){
         throw $e;
     }
 };
-//auth container
+//auth 
 $container['AuthModel'] = function ($container) use($options) {
     try{
         return new AuthModel($options);
@@ -41,6 +42,17 @@ $container['AuthModel'] = function ($container) use($options) {
     }
     
 };
+// request 
+$container['ApiLimiterModel'] = function ($container) use($options) {
+    try{
+        return new ApiLimiterModel($options);
+    }catch (Exception $e){
+        throw $e;
+    }
+    
+};
+
+
 //AuthMiddleWare
 
 $container['AuthMiddleware']= function ($container) use($options){
