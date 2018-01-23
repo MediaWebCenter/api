@@ -23,17 +23,22 @@ class Auth
             "jti" => $jti,
             "id" => $data->id,
             "username" => $username,
+            "xrequest" => $data->xrequest,
             "scope" => $deserializar,
             'aud' => self::Aud(),
             );
+            
             //Codificamos el token en JWT
         $token=JWT::encode($token,getenv("JWT_SECRET"));
+       
         //retornamos el token
         return $token;
     }
   //encriptar el token
     public static function Restore($data,$username)
     {
+
+        
                      
         $deserializar= unserialize($data->scope);
          $token = array(
@@ -42,10 +47,12 @@ class Auth
             "jti" => $data->jti,
             "id" => $data->id,
             "username" => $username,
+            "xrequest" =>$data->xrequest,
             "scope" => $deserializar,
             'aud' => self::Aud(),
             
         );
+       
        $token=JWT::encode($token,getenv("JWT_SECRET"));
        return $token;
        

@@ -3,8 +3,7 @@ namespace src\lib;
 use src\models;
 use src\models\ApiLimiterModel;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+
 
 
 
@@ -22,19 +21,43 @@ class  apiLimiterLib
        $token= $this->container->get('token');
        //llamamos al modelo de ApiLimiterModel
        $auth = $this->container->get('ApiLimiterModel');
-        //enviamos el id de token para consulta en la BBDD el xrequest
-       $data=$auth->seeRequest($token->id);
-       //extraemos el limite que tiene el usuario de llamadas
-       $requestLimit=$data->xrequest; 
-       //insertamos el usuario
-       $request=array (
-        "username"=>$token->username,
-        "count"=> 1
-         );
+       //enviamos el numero respuestas de count
+       $count=$auth->seeRequest($token->username);
+       //comprobamos si es un objeto lo que devuelve
+      
+      if(!is_object($count)){
+         $request=array (
+            "username"=>$token->username,
+            "count"=> 1
+             );
+          $insert=$auth->insertRequest($request);
+          return TRUE;
+         
+       }else{
+           //comprobamos si tiene acceso a la zona por el limitador de request
+        if ((int)$count->count<(int)$token->xrequest){
+             //pasamos a un numero entero
+            $integer=$count->count;
+            $i=(int)$integer;
+            $j=$i+1;
+            $request=array (
+                "username"=>$token->username,
+                "count"=> $j
+                 );
+          //insertamos en la base datos el nuevo valor
+          $insert=$auth->insertRequest($request);
+           return TRUE;
+               
+        }else{
+            return FALSE;
+        }
 
-        var_dump($request);
-        die();
-        $insert=$auth->insertRequest($request);
+       }
+       
+     
+       
+      
+    
      
     
        

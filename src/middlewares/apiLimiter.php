@@ -15,9 +15,14 @@ class apiLimiter{
       //inyectamos las dependencias del container
       $limiterLib= new apiLimiterLib($container);
       //llamamos al metodo creado
-      $limiterLib->apiLimiter();
-    
-     return $next($request, $response);
-  }
+      $res=$limiterLib->apiLimiter();
+      if($res===TRUE){
+       //Dejamos que pase el middleware
+        return $next($request, $response);
+     }else{
+         //no damos permiso para continuar ejecutando la API
+         return $response->withJson(array('error'=>'No tiene permiso acceso a esta ruta'), 404);
+      }
+    }
 
 }

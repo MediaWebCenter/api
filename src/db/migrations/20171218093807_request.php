@@ -32,7 +32,6 @@ class Request extends AbstractMigration
         $table->addColumn('username', 'string', ['limit' => 50])
               ->addColumn('count', 'integer', ['limit' => 50])
               ->addColumn('created', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-              ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])
               ->addIndex(['username'])
               ->create();
 

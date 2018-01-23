@@ -30,7 +30,7 @@ class AuthModel extends BaseModel
 
     public function encriptarPayload(int $id){
       try {
-            $campos=array($this->data.'.iat',$this->data.'.exp', $this->data.'.jti', $this->data.'.scope', $this->data.'.id'); 
+            $campos=array($this->data.'.iat',$this->data.'.exp', $this->data.'.jti', $this->data.'.scope', $this->data.'.id', $this->data.'.xrequest'); 
             //peticion de la tabla account_info de los datos iat, exp y scope
             $valores = $this->conexion->from($this->data)
                                       ->select(NULL)

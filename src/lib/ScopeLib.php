@@ -27,6 +27,7 @@ public function getScope($route){
     if (empty($route)) {
         //No existe el nombre ruta no hay permisos, continua la ejecucion de la ruta
          return TRUE;
+         
          }else{
         //existe el nombre de la ruta se comprueba los permisos de acceso a dicha ruta
         $subcadena = strpos ($route, '.'); 
