@@ -9,10 +9,11 @@ class ApiLimiterModel extends BaseModel
 
 function seeRequest( $username){
         try {
-           
+            //cogemos el valor que nos interesa de la tabla, la cuenta visitas
             $columnas=array($this->request.'.count');
             $count = $this->conexion->from($this->request)
             ->select(NULL)
+            //metemos los campos a seleccionar de la tabla
             ->select($columnas)
             //Primer where nos busca por username
             ->where('username',$username)
@@ -32,10 +33,8 @@ function seeRequest( $username){
   
 //insertamos en la tabla el usuario
     function insertRequest( $values){
+        //upadate de la consultas
        return $this->conexion->insertInto($this->request, $values)->execute();
     }
-//upadate de la consultas
-
-    
 
 }

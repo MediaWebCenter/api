@@ -21,7 +21,7 @@ class apiLimiter{
         return $next($request, $response);
      }else{
          //no damos permiso para continuar ejecutando la API
-         return $response->withJson(array('error'=>'No tiene permiso acceso a esta ruta'), 404);
+         return $response->withJson(array('warning'=>'Terminó su sesión, ha excedido el límite consultas a la API'), 404);
       }
     }
 

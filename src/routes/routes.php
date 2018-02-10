@@ -39,14 +39,14 @@ $app->group('/v1', function () use ($container) {
         $this->post('', MarcasController::class . ':create')->setName("productos.post");
         $this->put('/{id}', MarcasController::class . ':update')->setName("productos.put");
         $this->delete('/{id}', MarcasController::class . ':delete')->setName("productos.delete");
-               });
+               })->add(new apiLimiter($container));
                
 /*********************** Autentificacion  *****************************************/
      $this->group('/token', function () {
          //generamos el token con el controlador llamando a la funcion generateToken
         $this->post('', AuthController::class . ':generateToken');
        });
-})->add(new Scope($container))->add(new apiLimiter($container));
+})->add(new Scope($container));
 
 
 

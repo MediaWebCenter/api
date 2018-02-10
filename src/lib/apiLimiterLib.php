@@ -33,40 +33,27 @@ class  apiLimiterLib
           //Devolvemos verdadero para que siga el middleware
           return TRUE;
          
-       }else{
-           //comprobamos si tiene acceso a la zona por el limitador de request
-        if ((int)$count->count<(int)$token->xrequest){
-             //pasamos a un numero entero
-            $integer=$count->count;
-            $i=(int)$integer;
-            $j=$i+1;
-            //Actualizamos el contador
-            $request=array (
-                "username"=>$token->username,
-                "count"=> $j
-                 );
-          //insertamos en la base datos el nuevo valor
-          $insert=$auth->insertRequest($request);
-           //Devolvemos verdadero para que siga el middleware
-           return TRUE;
+             }else{
+                //comprobamos si tiene acceso a la zona por el limitador de request
+               if ((int)$count->count<(int)$token->xrequest){
+                        //pasamos a un numero entero
+                        $integer=$count->count;
+                        $i=(int)$integer;
+                        $j=$i+1;
+                        //Actualizamos el contador
+                        $request=array (
+                            "username"=>$token->username,
+                            "count"=> $j
+                            );
+                    //insertamos en la base datos el nuevo valor
+                    $insert=$auth->insertRequest($request);
+                    //Devolvemos verdadero para que siga el middleware
+                    return TRUE;
                
-        }else{
-            //Devolvemos falso para que el middleware no autorice consultar la API
-            return FALSE;
+                }else{
+                    //Devolvemos falso para que el middleware no autorice consultar la API
+                    return FALSE;
+                     }
+            }
         }
-
-       }
-       
-     
-       
-      
-    
-     
-    
-       
-       }
-   
-
-    
-
 }
